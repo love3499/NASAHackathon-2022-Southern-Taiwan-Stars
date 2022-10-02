@@ -44,4 +44,4 @@ ax.scatter(std_data.values[:,1],std_data.values[:,4],std_data.values[:,5],alpha=
 ax.set_xlabel('magnitude')
 ax.set_ylabel('depth')
 ax.set_zlabel('rainfall')
-plt.show()
+plt.savefig('result_safety_risk_assessment.png')
