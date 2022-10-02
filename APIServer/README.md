@@ -8,7 +8,6 @@
 ## Deploy Steps:
 
 1. Deploy API Server:
-    * Move this dir to Desktop.
+    * Move all files to Desktop.
     * Run start.bat.
     * API server deployed successfully.
-2. Deploy servers successfully.
