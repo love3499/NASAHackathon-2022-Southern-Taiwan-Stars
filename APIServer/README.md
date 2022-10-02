@@ -9,9 +9,9 @@
 ## Deploy Steps:
 
 1. Deploy API Server:
-  1. Move this dir to Desktop.
-  2. Run start.bat.
-  3. API server deployed successfully.
+    1. Move this dir to Desktop.
+    2. Run start.bat.
+    3. API server deployed successfully.
 2. Deploy servers successfully.
 3. Open browser, connect to the web server "http://localhost"(Or your own domain).
 4. Enjoy.
