@@ -5,15 +5,17 @@
 [Project Demo Link](http://nasa.thebestyea.net/)
 
 
-## Step 1. [Deploy Active Inspection Platform for Abnormal Road Area\(Based on Quake Hunter\)](http://nasa.thebestyea.net/)
+## Deploy our website to view our project results.
+
+### Step 1. [Deploy Active Inspection Platform for Abnormal Road Area\(Based on Quake Hunter\)](http://nasa.thebestyea.net/)
 
 
 
-## Step 2. [Deploy API Server](http://nasa.thebestyea.net/)
+### Step 2. [Deploy API Server](http://nasa.thebestyea.net/)
 
 ---
 
-## Module implementation details
+## Module implementation details.
 
 
 
