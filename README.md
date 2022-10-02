@@ -2,7 +2,8 @@
 
 ## You are welcome to click the link below to view our project demo.
 
-[Project Demo Link](http://nasahackthon.thebestyea.net)
+Please use the Chrome Browser to open the demo link: [Project Demo Link](http://nasahackthon.thebestyea.net)
+
 
 
 ## Deploy our website to view our project results.
