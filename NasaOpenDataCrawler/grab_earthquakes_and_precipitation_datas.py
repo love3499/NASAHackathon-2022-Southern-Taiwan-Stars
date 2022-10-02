@@ -7,10 +7,12 @@ from bs4 import BeautifulSoup
 This code is to grab all the earthqukes datas and precipitation in Taiwan in the past decade.
 The datas are from UGAS, China Earthquake Administration and Central Weather Bureau in Taiwan, which are used to improve the QuakeHunter platform.
 
-df : 十年來的地震資料
-station_list: 所有的氣象觀測站資料
-result.csv : 三年來所有的氣象觀測資料
+Input Files:
+station_datas：all the weather station informations in Taiwan
 
+Output Files:
+result.csv : earthqukes datas in the past decade.
+earthquakes_and_precipitation_datas.csv：earthqukes datas and precipitation in Taiwan in the past decade.
 """
 
 #  抓所有的地震資料
@@ -146,6 +148,6 @@ for i in range (0, len(result), 24):
     total_list.append(total)
     
 df['rainfall'] = total_list
-df.to_csv("earthquake_datas.csv", index=False, sep = ',')
+df.to_csv("earthquakes_and_precipitation_datas.csv", index=False, sep = ',')
 
 

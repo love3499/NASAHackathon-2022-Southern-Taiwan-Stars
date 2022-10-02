@@ -2,9 +2,8 @@
 This code is to grab all the landslides alarm datas in the past three years,
 which is used to improve the QuakeHunter platform, too.
 
-df : 十年來的地震資料
-station_list: 所有的氣象觀測站資料
-result.csv : 三年來所有的氣象觀測資料
+Output_Fikes:
+landslide_datas.csv: all the landslides alarm datas in the past three years.
 
 """
 import googlemaps
@@ -90,7 +89,6 @@ df['address'] = df['LandslideName']+ df['County'] + df['Town']
 df['test'] = df['LastUpdateDate']+ df['address']
 
 df = df.drop_duplicates(subset=['test'])
-df.to_csv("address_datas.csv", index=False, sep = ',')
 
 print(df.info())
 
@@ -152,7 +150,7 @@ df = pd.read_csv('address_datas.csv')
 # drop function which is used in removing or deleting rows or columns from the CSV files
 data.drop('shift', inplace=True, axis=1)
 data['AlertLevel'] = df['AlertLevel']
-data.to_csv("landslide_datas_2.csv", index=False, sep = ',')
+data.to_csv("landslide_datas.csv", index=False, sep = ',')
 
 
 

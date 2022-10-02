@@ -1,9 +1,3 @@
-# NASAHackathon2021
-
-## You are welcome to click the link below to view our project demo.
-
-[Project Demo Link](https://thebestyea.net/)
-
 ## UAV ROAD INSPECTION MODULE
 ###Requirements for Windows, Linux and macOS
 

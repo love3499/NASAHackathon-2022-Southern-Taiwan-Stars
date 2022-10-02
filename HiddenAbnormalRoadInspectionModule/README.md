@@ -1,5 +1,3 @@
-# NASAHackathon2022
-
 ## Execute Hidden Abnormal Road Inspection Model
 
     python HiddenAbnormalRoadInspectioModel.py
