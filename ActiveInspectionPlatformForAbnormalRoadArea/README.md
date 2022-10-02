@@ -4,7 +4,6 @@
 
 1. OS: Windows 10 Home(19043.2006)
 2. Webserver Framework: Windows Internet Information Services(Version 10.0.19041.2006)
-3. API Server Framework: NodeJS(v14.16.1)
 
 ## Deploy Steps:
 
