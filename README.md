@@ -12,7 +12,7 @@
 
 ### Step 2. [Deploy API Server](https://github.com/love3499/NASAHackathon-2022-Southern-Taiwan-Stars/tree/main/APIServer)
 
-### Step 3. It creates local server and In browser when we hit root route (http://127.0.0.1:80/) we'll get the output.
+### Step 3. It creates local server and In browser when we hit root route (http://127.0.0.1/) we'll get the output.
 ---
 
 ## Module implementation details.
