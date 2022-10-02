@@ -1,6 +1,6 @@
 # NASAHackathon2022
 
-## You are welcome to click the link below to view our project demo.
+## You are welcome to click the link below to view our [project demo](http://nasahackthon.thebestyea.net)(Please use the Chrome Browser).
 
 Please use the Chrome Browser to open the demo link: [Project Demo Link](http://nasahackthon.thebestyea.net)
 
