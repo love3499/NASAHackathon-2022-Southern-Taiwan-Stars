@@ -6,16 +6,16 @@
 
 ## Get Bridge Information(Output file:Bridge_information_gps.csv)
 
-    '''python convert_adress_to_latitudea_longitude.py
+    python convert_adress_to_latitudea_longitude.py
 
 ## Get Earthquake History Data(Output file:.csv)
 
-    '''python convert_adress_to_latitudea_longitude.py
+    python convert_adress_to_latitudea_longitude.py
 
 ## Get Rainfall Data(Output file:.csv)
 
-    '''python convert_adress_to_latitudea_longitude.py
+    python convert_adress_to_latitudea_longitude.py
 
 ## Get Landslide Data(Output file:.csv)
 
-    '''python convert_adress_to_latitudea_longitude.py
+    python convert_adress_to_latitudea_longitude.py
