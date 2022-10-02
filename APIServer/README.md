@@ -12,4 +12,3 @@
     * Run start.bat.
     * API server deployed successfully.
 2. Deploy servers successfully.
-3. Open browser, connect to the web server "http://localhost" (Or your own domain).
