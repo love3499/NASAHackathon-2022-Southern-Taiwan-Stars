@@ -1,0 +1,32 @@
+
+
+1.rename   gopro=1.mp4    argus=2.mp4
+2.轉檔gopro為avi
+
+ffmpeg -i 1.mp4 -vcodec copy -acodec copy 1.avi
+
+3.分割影片 2秒取一張
+python3 video_process.py
+
+4.複製到身碟轉交給 amy 挑選影像拍攝
+
+5.sensor data  合併 and rename 1.txt  
+
+6.run yolo
+
+
+./darknet detector test /home/mmdb/Desktop/bridge/bridge/cfg/bridge.data /home/mmdb/Desktop/bridge/bridge/cfg/yolov4-tiny-obj.cfg /home/mmdb/Desktop/bridge/bridge/cfg/weights/yolov4-tiny-obj_final.weights
+
+/home/mmdb/Desktop/bridge/bridge/output.txt
+
+7.複製結果到pdg gen 目錄
+
+8.刪除 7 9 接著重新命名 10 -----9
+9.拿回隨身碟影像  copy  影像拍攝
+
+10.python3 pdfgen.py
+
+11.run process 
+
+
+conda activate pytorch
