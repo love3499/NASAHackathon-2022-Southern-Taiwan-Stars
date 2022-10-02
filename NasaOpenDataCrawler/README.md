@@ -8,14 +8,10 @@
 
     python convert_adress_to_latitudea_longitude.py
 
-## Get Earthquake History Data(Output file:.csv)
+## Get Earthquake and  Rainfall History Data(Output file:.csv)
 
-    python convert_adress_to_latitudea_longitude.py
-
-## Get Rainfall Data(Output file:.csv)
-
-    python convert_adress_to_latitudea_longitude.py
+    python grab_earthquakes_and_precipitation_datas.py
 
 ## Get Landslide Data(Output file:.csv)
 
-    python convert_adress_to_latitudea_longitude.py
+    python grab_landslides_coor_datas.py
