@@ -11,3 +11,4 @@
     * Move all files to Desktop.
     * Run start.bat.
     * API server deployed successfully.
+2. Redirect back to [NASAHackathon2022 Repository](https://github.com/love3499/NASAHackathon-2022-Southern-Taiwan-Stars), and follow the Step.3 to view the final result.
