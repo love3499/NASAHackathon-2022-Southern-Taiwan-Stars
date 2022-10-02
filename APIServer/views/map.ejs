@@ -1,0 +1,414 @@
+<link rel="stylesheet" href="assets/leaflet/leaflet.css" />
+<link rel="stylesheet" href="assets/css/map.css" />
+<script src="assets/leaflet/leaflet.js"></script>
+<link rel="stylesheet" href="assets/jquery/jquery-ui.css">
+<script src="assets/jquery/jquery-1.12.4.js"></script>
+<script src="assets/jquery/jquery-ui.js"></script>
+
+<div id="highlight1" class="highlight1"></div>
+
+<div id="mapid"></div>
+
+<div id="loading">
+    Loading...0%
+</div>
+
+<div id="date_picker">
+    Date
+</div>
+
+<div class="animation_list">
+    List
+    <li class="active">
+        <a href="#" class="clickable panel-collapsed" style="color: red; text-decoration: none;">Damaged Area<span class="pull-right"><i class="glyphicon glyphicon-chevron-down"></i></span></a>
+        <ul id="red_list" class="collapsein" style="overflow: auto;max-height: 150px;">
+            <li class="nothing_item">無</li>
+        </ul>
+    </li>
+    <li class="active">
+        <a href="#" class="clickable panel-collapsed" style="color: #d95e00; text-decoration: none;">Potential Abnormal Area<span class="pull-right"><i class="glyphicon glyphicon-chevron-down"></i></span></a>
+        <ul id="orange_list" class="collapsein" style="overflow: auto;max-height: 150px;">
+            <li class="nothing_item">無</li>
+        </ul>
+    </li>
+    <li class="active">
+        <a href="#" class="clickable panel-collapsed" style="color: green; text-decoration: none;">Safe Area<span class="pull-right"><i class="glyphicon glyphicon-chevron-down"></i></span></a>
+        <ul id="green_list" class="collapsein" style="overflow: auto;max-height: 150px;">
+            <li class="nothing_item">無</li>
+        </ul>
+    </li>
+</div>
+
+<div id="three_d_outter">
+    <div id="three_d_container">
+        <a id="close_3d" href="#" onclick="hide_3d();">Close</a>
+        <canvas id="c" style="width=100%; height=100%"></canvas>
+        <script src="assets/js/Pic_Result.js"></script>
+        <script type="module">
+            import * as THREE from 'https://threejsfundamentals.org/threejs/resources/threejs/r132/build/three.module.js';
+            import {
+                OrbitControls
+            } from 'https://threejsfundamentals.org/threejs/resources/threejs/r132/examples/jsm/controls/OrbitControls.js';
+            import {
+                OBJLoader
+            } from 'https://threejsfundamentals.org/threejs/resources/threejs/r132/examples/jsm/loaders/OBJLoader.js';
+            import {
+                MTLLoader
+            } from 'https://threejsfundamentals.org/threejs/resources/threejs/r132/examples/jsm/loaders/MTLLoader.js';
+            var percent_offset = 0.0;
+            var timer = setInterval(Add_Percent_To_Make_User_More_Patient, 100);
+
+            function Add_Percent_To_Make_User_More_Patient() {
+                percent_offset += 0.01;
+            }
+
+            function getOffset(el) {
+                var _x = 0;
+                var _y = 0;
+                while (el && !isNaN(el.offsetLeft) && !isNaN(el.offsetTop)) {
+                    _x += el.offsetLeft - el.scrollLeft;
+                    _y += el.offsetTop - el.scrollTop;
+                    el = el.offsetParent;
+                }
+                return {
+                    top: _y,
+                    left: _x
+                };
+            }
+
+            function three_d() {
+                const canvas = document.querySelector('#c');
+                const renderer = new THREE.WebGLRenderer({
+                    canvas
+                });
+                var texts = [];
+
+                const fov = 45;
+                const aspect = 2; // the canvas default
+                const near = 0.1;
+                const far = 10000;
+                const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
+                camera.position.set(0, 10, -40);
+                camera.rotation.y = 0;
+
+                const controls = new OrbitControls(camera, canvas);
+                controls.target.set(0, 5, 0);
+                controls.update();
+
+                const scene = new THREE.Scene();
+
+                $(canvas).on('mousemove', () => {
+                    texts.forEach(text => {
+                        text.lookAt(camera.position);
+                    });
+                });
+
+                function add_text(text, x, y, z) {
+                    var textLoad = new THREE.FontLoader().load('assets/font/font.json', function(font) {
+                        var txtGeo = new THREE.TextGeometry(text, {
+                            font: font,
+                            size: 2.0,
+                            height: 0.1,
+                            curveSegments: 12,
+                            bevelEnabled: true,
+                            bevelThickness: 0.1,
+                            bevelSize: 0.05,
+                            bevelSegments: 3
+                        });
+                        var txtMater = new THREE.MeshBasicMaterial({
+                            color: 0xfc9003
+                        });
+                        var txtMesh = new THREE.Mesh(txtGeo, txtMater);
+                        txtMesh.position.set(x, y, z);
+                        texts.push(txtMesh);
+                        scene.add(txtMesh);
+                    });
+                }
+
+                function add_img(url) {
+                    const texture = new THREE.TextureLoader().load(url);
+                    texture.wrapS = THREE.RepeatWrapping;
+                    texture.wrapT = THREE.RepeatWrapping;
+                    texture.repeat.set(1, 1);
+                    const geometry = new THREE.PlaneGeometry(16, 9);
+                    let pts = [
+                        [0.5, 0.5],
+                        [-0.5, 0.5],
+                        [-0.5, -0.5],
+                        [0.5, -0.5]
+                    ].map(p => {
+                        return new THREE.Vector2(p[0], p[1])
+                    });
+                    let border_geometry = new THREE.BufferGeometry().setFromPoints(pts);
+                    border_geometry.setIndex([0, 1, 2, 3, 0]);
+                    border_geometry.scale(16, 9, 1);
+
+                    const planeMat = new THREE.MeshPhongMaterial({
+                        map: texture,
+                        side: THREE.DoubleSide,
+                    });
+                    const mesh = new THREE.Mesh(geometry, planeMat);
+                    mesh.rotation.y = Math.PI * -.5;
+                    scene.add(mesh);
+
+                    var outlineMaterial1 = new THREE.LineBasicMaterial({
+                        color: 0xFF0000,
+                        linewidth: 300,
+                    })
+
+                    var outlineMesh1 = new THREE.Line(border_geometry, outlineMaterial1);
+                    outlineMesh1.rotation.y = Math.PI * -.5;
+                    scene.add(outlineMesh1);
+                    return new Pic_Result(mesh, outlineMesh1);
+                }
+
+                function add_ball() {
+                    let geometry = new THREE.SphereGeometry(1, 32, 16);
+                    let material = new THREE.MeshBasicMaterial({
+                        color: 0xff0000
+                    });
+                    let sphere = new THREE.Mesh(geometry, material);
+                    scene.add(sphere)
+                    return sphere;
+                }
+
+                scene.background = new THREE.Color('gray'); {
+                    add_img("assets/3d/pictures/1.jpg").Set_Position(78, 9, -9);
+                    add_text("Defect1", 78, 14, -9);
+                    add_ball().position.set(79, 5.5, 3);
+
+
+                    var img = add_img("assets/3d/pictures/2.jpg");
+                    img.Set_Position(65, 7, 3);
+                    img.Set_Rotation(0);
+                    add_text("Defect2", 65, 12, 3);
+                    add_ball().position.set(71, 11, 3);
+
+                    img = add_img("assets/3d/pictures/3.jpg");
+                    img.Set_Position(31, 6, 15);
+                    img.Set_Rotation(Math.PI * .5);
+                    add_text("Defect3", 31, 11, 15);
+                    add_ball().position.set(31, 11, 3);
+
+                    img = add_img("assets/3d/pictures/4.jpg");
+                    img.Set_Position(24.5, 5, -12);
+                    add_text("Defect4", 24.5, 10, -12);
+                    add_ball().position.set(24.5, 5, 2);
+
+                    img = add_img("assets/3d/pictures/5.jpg");
+                    img.Set_Position(12, 12, -7);
+                    img.Set_Rotation(0);
+                    add_text("Defect5", 12, 17, -7);
+                    add_ball().position.set(1, 12, -4);
+                }
+
+                const skyColor = 0xB1E1FF; // light blue
+                const groundColor = 0xB97A20; // brownish orange
+                const intensity = 1;
+                scene.add(new THREE.HemisphereLight(skyColor, groundColor, intensity));
+
+                const color = 0xFFFFFF;
+                const light = new THREE.DirectionalLight(color, intensity);
+                light.position.set(0, 10, 0);
+                light.target.position.set(-5, 0, 0);
+                scene.add(light);
+                scene.add(light.target);
+
+                const mtlLoader = new MTLLoader();
+                mtlLoader.load(
+                    'assets/3d/model.mtl',
+                    (materials) => {
+                        materials.preload();
+                        const objLoader = new OBJLoader();
+                        objLoader.setMaterials(materials);
+                        console.log('loading model');
+                        objLoader.load('assets/3d/model.obj', (root) => {
+                                scene.add(root);
+                                root.position.y += 30;
+                                root.rotation.x = Math.PI * -.5;
+                                render();
+                                console.log('model loaded')
+                                $("#loading").hide();
+                                clearInterval(timer);
+                            },
+                            function(xhr) {
+                                let offsetted_percent = Math.round(((xhr.loaded / xhr.total) * 85 + percent_offset) * 10) / 10;
+                                if (offsetted_percent > 100)
+                                    offsetted_percent = 100;
+                                $("#loading").html('Loading...' + offsetted_percent + '%');
+                            }, );
+                        // $("#loading").hide();
+
+                    },
+                    (xhr) => {
+                        console.log((xhr.loaded / xhr.total) * 100 + '% loaded')
+                    },
+                    (error) => {
+                        console.log('An error happened')
+                    }
+                )
+
+                function resizeRendererToDisplaySize(renderer) {
+                    const canvas = renderer.domElement;
+                    const width = canvas.clientWidth;
+                    const height = canvas.clientHeight;
+                    const needResize = canvas.width !== width || canvas.height !== height;
+                    if (needResize) {
+                        renderer.setSize(width, height, false);
+                    }
+                    return needResize;
+                }
+
+                function render() {
+
+                    if (resizeRendererToDisplaySize(renderer)) {
+                        const canvas = renderer.domElement;
+                        camera.aspect = canvas.clientWidth / canvas.clientHeight;
+                        camera.updateProjectionMatrix();
+                    }
+
+                    renderer.render(scene, camera);
+
+                    requestAnimationFrame(render);
+                }
+                requestAnimationFrame(render);
+            }
+            hide_3d();
+            three_d();
+        </script>
+    </div>
+</div>
+
+<script type="text/javascript">
+    // 建立 Leaflet 地圖
+
+    var current_date = "2018-01-01";
+    var map = L.map('mapid');
+    // 設定經緯度座標
+    map.setView(new L.LatLng(22.571111, 120.731451), 10);
+    map.on('click', function(e) {
+        var popLocation = e.latlng;
+        var popup = L.popup()
+            .setLatLng(popLocation)
+            .setContent('<p>座標: ' + popLocation + '</p>')
+            .openOn(map);
+    });
+    // 設定圖資來源
+    var osmUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+    var osm = new L.TileLayer(osmUrl, {
+        minZoom: 4,
+        maxZoom: 24
+    });
+    map.addLayer(osm);
+
+    function Get_Level_Description(Level) {
+        switch (Level) {
+            case "green":
+                return "Safe Area";
+            case "orange":
+                return "Potential Abnormal Area";
+            case "red":
+                return "Damaged Area";
+        }
+    }
+
+    function Image_Error(image) {
+        image.onerror = "";
+        image.src = "assets/images/no-data.png";
+    }
+
+    function Fly_To(lat, lon) {
+        var latlng = L.latLng(lat, lon);
+        map.flyTo(latlng, 16);
+    }
+
+    function Add_To_List(point) {
+        var list;
+        switch (point.level) {
+            case "green":
+                list = $("#green_list");
+                break;
+            case "orange":
+                list = $("#orange_list");
+                break;
+            case "red":
+                list = $("#red_list");
+                break;
+        }
+        list.find('.nothing_item').remove();
+        var str = list.html();
+        str += '<li class="list_item" onclick="Fly_To(' + point.lat + "," + point.lon + ')">' + point.name + '</li>';
+        list.html(str);
+    }
+
+    function Add_Point(point) {
+        var icon = L.icon({
+            iconUrl: 'assets/images/' + point.type + '-' + point.level + '.png',
+            iconSize: [24, 24],
+            iconAnchor: [24, 24],
+            popupAnchor: [24, 24]
+        });
+        L.marker([point.lat, point.lon], {
+            icon: icon
+        }).addTo(map).on('click', function(e) {
+            var popLocation = e.latlng;
+            var popup = L.popup({
+                    maxWidth: 1000
+                })
+                .setLatLng(popLocation)
+                .setContent(<%- include("map_info.ejs") %>)
+                .openOn(map);
+        });
+        Add_To_List(point);
+    }
+
+    var points = <%- JSON.stringify(points) %>;
+    points.forEach(points => {
+        Add_Point(points);
+    });
+</script>
+
+<script>
+    $(document).ready(function() {
+        var picker = $("#date_picker").datepicker({
+            dateFormat: 'yy-mm-dd',
+            onSelect: function(dateText) {
+                current_date = dateText;
+            }
+        });
+
+        current_date = picker.val();
+    });
+</script>
+
+<!--List-->
+<script>
+    jQuery(function($) {
+        $('.active a.clickable').on("click", function(e) {
+            if ($(this).hasClass('panel-collapsed')) {
+                $(this).parents('.active').find('.collapsein').slideDown();
+                $(this).removeClass('panel-collapsed');
+                $(this).find('i').removeClass('glyphicon-chevron-down').addClass('glyphicon-chevron-up');
+            } else {
+                $(this).parents('.active').find('.collapsein').slideUp();
+                $(this).addClass('panel-collapsed');
+                $(this).find('i').removeClass('glyphicon-chevron-up').addClass('glyphicon-chevron-down');
+            }
+        });
+    });
+</script>
+
+<!--3D-->
+<script>
+    function hide_3d() {
+        $("#three_d_outter").hide();
+    }
+
+    function show_3d() {
+        $("#three_d_outter").show();
+    }
+
+    function Highlight_Element(element) {
+        var target = $(element);
+    }
+</script>
